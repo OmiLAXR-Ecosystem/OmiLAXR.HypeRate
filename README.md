@@ -1,25 +1,23 @@
-# OmiLAXR Module
+# OmiLAXR.HypeRate
 
-Feel free to adjust this and other readmes. Each folder has own `README.md` files with more instructions.
-
-@DEVELOPERS Please adjust `Install by using scoped registry` and `Install by using Git url` or remove them. Also think about to adapt the `package.json` and `.asmdef` files. You can adjust your `keywords` in `package.json` how much you need. We recommend to keep the keywords `OmiLAXR` and at least `OmiLAXR.Module`.
-Finally remove this line.
+This module is using HypeRate SDK for measuring heart rate and is providing the values to OmiLAXR pipeline. To use it just drag `HypeRateProvider` to the target actor pipeline and attach it to the `Heart Rate Monitor` component (see example in Prefab).
 
 ## Module dependencies
-The adapter has following third-party dependencies:
+The adapter has following third-party dependencies attached:
 
-- `com.example.third`: For explaining users why a third party package is needed for. With third party we mean packages that need either adding package via git or adding a scoped registry entry.
-- `com.example.third2`: ...
+- `HypeRate`: We adjusted and attached the sourde files of the SDK https://github.com/HypeRate/HypeRate-Unity/tree/master/Assets/HypeRate/HypeRate%20Heart%20Rate%20SDK. No installations are needed.
+- `Supported Device`: Install on the device of your choice the `HypeRate` app: https://www.hyperate.io/downloads
+- `API Key`: Get an API key from https://www.hyperate.io/api. It is free for research and indie projects.
 
 ## Install by using scoped registry
 1. Ensure in "Project settings" > "Package Manager" that you have the scoped registry with following settings:
-    - Name: npmjs
-    - URL: http://registry.npmjs.com
-    - Scope(s): `com.rwth.unity.omilaxr.Modules.YOUR_MODULE_NAME`
+  - Name: npmjs
+  - URL: http://registry.npmjs.com
+  - Scope(s): `com.rwth.unity.omilaxr.hyperate`
 2. Go to Package Manager.
 3. Click on the (+) button.
 4. Select 'Add package by name'.
-5. Place in 'Name' field: `com.rwth.unity.omilaxr.adapters.YOUR_MODULE_NAME`.
+5. Place in 'Name' field: `com.rwth.unity.omilaxr.hyperate`.
 
 ### Adding scoped registry by using manifest.json (also recommended - quick way)
 1. Alternatively, instead of adding the scoped registry inside Unity editor you can do it by using `manifest.json` file.
@@ -28,18 +26,19 @@ The adapter has following third-party dependencies:
    {
    "name": "npmjs",
    "url": "http://registry.npmjs.com/",
-   "scopes": [
-   "com.rwth.unity.omilaxr.adapters.YOUR_MODULE_NAME"
+   "scopes": [ 
+   "com.rwth.unity.omilaxr",
+   "com.rwth.unity.omilaxr.hyperate"
    ]
    }]`.
-4. By the way, you can also add here this package by adding `"com.rwth.unity.omilaxr.adapters.YOUR_MODULE_NAME": "2.0.0"` to the dependencies (attention you can change the version).
+4. By the way, you can also add here this package by adding `"com.rwth.unity.omilaxr.hyperate": "1.0.0"` to the dependencies (attention you can change the version).
 
 
 ## Install by using Git url
 1. Go to Package Manager.
 2. Click on the (+) button.
 3. Select 'Add package from git URL'.
-4. Paste `https://YOUR_REPOSITORY_URL.git` and confirm.
+4. Paste `https://gitlab.com/learntech-rwth/omilaxr-ecosystem/v2/heart-rate/omilaxr.hyperate.git` and confirm.
 
 ## For Developers
 
@@ -48,32 +47,29 @@ Than, you can include the package into your project by going to `Window > Packag
 
 For production use we recommend to use `Add package form git URL` or using scoped registries (see below).
 
-## Use another data format instead of xAPI
-Remove references to `xAPI.Registry` and `OmiLAXR.xAPI`.
-
 ## Default Folder Structure
 
 Here you can see the default structure of the adapter unity packages. The folders surrounding with (FOLDER) are not delivered by default.
 
 - root
-    - (Editor)
-    - Examples
-    - Plugins
-    - Prefabs
+  - (Editor)
+  - Examples
+  - Plugins
+  - Prefabs
+  - Runtime
+    - Actors
+    - Composers
+      - HigherComposers
+    - Endpoints
+    - Extensions
+    - Filters
+    - Hooks
+    - Listeners
+    - Pipelines
+    - TrackingBehaviours
+  - Tests
     - Runtime
-        - Actors
-        - Composers
-            - HigherComposers
-        - Endpoints
-        - Extensions
-        - Filters
-        - Hooks
-        - Listeners
-        - Pipelines
-        - TrackingBehaviours
-    - Tests
-        - Runtime
-        - (Editor)
+    - (Editor)
 
 ## Use internal for project
 If you do not wish to publish the package you can add the package in root of your Unity project. Accordingly you have to import your package for your project (see above "For Developers").
