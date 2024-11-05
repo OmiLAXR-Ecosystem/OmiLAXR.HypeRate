@@ -1,35 +1,89 @@
-# Module Runtime Scripts
+# OmiLAXR.HypeRate
 
-Place here your adapter scripts. We recommend to keep the folders and distribute your scripts in the folders.
-When a folder has at least one script you can delete the `keep` file.
+This module is using HypeRate SDK for measuring heart rate and is providing the values to OmiLAXR pipeline. To use it just drag `HypeRateProvider` to the target actor pipeline and attach it to the `Heart Rate Monitor` component (see example in Prefab).
 
-We also recommend to follow the namespace according the folder structure. 
+## Module dependencies
+The adapter has following third-party dependencies attached:
 
-@DEVELOPERS Please adjust `Install by using scoped registry` and `Install by using Git url` or remove them. Finally remove this line.
+- `HypeRate`: We adjusted and attached the sourde files of the SDK https://github.com/HypeRate/HypeRate-Unity/tree/master/Assets/HypeRate/HypeRate%20Heart%20Rate%20SDK. No installations are needed.
 
-## OmiLAXR Pipeline
+## Install by using scoped registry
+1. Ensure in "Project settings" > "Package Manager" that you have the scoped registry with following settings:
+  - Name: npmjs
+  - URL: http://registry.npmjs.com
+  - Scope(s): `com.rwth.unity.omilaxr.hyperate`
+2. Go to Package Manager.
+3. Click on the (+) button.
+4. Select 'Add package by name'.
+5. Place in 'Name' field: `com.rwth.unity.omilaxr.hyperate`.
 
-Each pipeline has an own actor. A pipeline is running through following steps:
+### Adding scoped registry by using manifest.json (also recommended - quick way)
+1. Alternatively, instead of adding the scoped registry inside Unity editor you can do it by using `manifest.json` file.
+2. Go to you project root and then open `Packages/manifest.json`.
+3. Ensure following entries in your file: `"scopedRegistries": [
+   {
+   "name": "npmjs",
+   "url": "http://registry.npmjs.com/",
+   "scopes": [ 
+   "com.rwth.unity.omilaxr",
+   "com.rwth.unity.omilaxr.hyperate"
+   ]
+   }]`.
+4. By the way, you can also add here this package by adding `"com.rwth.unity.omilaxr.hyperate": "1.0.0"` to the dependencies (attention you can change the version).
 
-1. Listeners: searching for target game objects
-2. Filters: filter game objects
-3. Tracking Behaviours: define when tracking is happening (async events)
-4. Composers: create data statements triggered by events of tracking behaviours async events. On Demand Higher Composers can combine multiple statements to create further statements (e.g. semantic statements).
-5. Hooks: Hooks between Composers and Endpoints. Hooks can manipulate existing statements.
-6. Endpoints: Targets where statements are stored.
 
-## OmiLAXR Components
+## Install by using Git url
+1. Go to Package Manager.
+2. Click on the (+) button.
+3. Select 'Add package from git URL'.
+4. Paste `https://gitlab.com/learntech-rwth/omilaxr-ecosystem/v2/heart-rate/omilaxr.hyperate.git` and confirm.
 
-You can implement own components. We recommend to copy files from `Examples` folder and adjust them.
+## For Developers
 
-- Actors: Pipeline Actor. The data statement will later have this actor.
-- Composers: Compose interaction or scene data into analytics statements of your choice.
-    - HigherComposers: Can react on created statements and compose new statements. For example, semantic statements can be generated if some specific statements were created.
-- Endpoints: Handler which stores the statements.
-- Extensions: C# Extension functions for objects
-- Filters: They can filter detected objects. For example blacklists or specific components.
-- Hooks: Manipulate or Discard existing statements.
-- Listeners: Find candidates for pipelines (e.g. specific components or game objects).
-- Pipelines: Each pipeline is isolated and has its own actor.
-- TrackingBehaviours: Detect specific behaviour and offers events on that composers can react.
+To work with this package we recommend to place it somewhere outside your Unity project (if the package gets an own git repository) or in root of your project.
+Than, you can include the package into your project by going to `Window > Package Manager`, click on `(+)` button and finally import the `package.json` of this project by clicking on `Add package from disk`.
 
+For production use we recommend to use `Add package form git URL` or using scoped registries (see below).
+
+## Default Folder Structure
+
+Here you can see the default structure of the adapter unity packages. The folders surrounding with (FOLDER) are not delivered by default.
+
+- root
+  - (Editor)
+  - Examples
+  - Plugins
+  - Prefabs
+  - Runtime
+    - Actors
+    - Composers
+      - HigherComposers
+    - Endpoints
+    - Extensions
+    - Filters
+    - Hooks
+    - Listeners
+    - Pipelines
+    - TrackingBehaviours
+  - Tests
+    - Runtime
+    - (Editor)
+
+## Use internal for project
+If you do not wish to publish the package you can add the package in root of your Unity project. Accordingly you have to import your package for your project (see above "For Developers").
+
+## Publication
+
+You can publish your package at any npm registry.
+It makes sense to publish packages for easier distribution in other projects.
+But we recommend to use `npmjs.com`. [Here](https://docs.npmjs.com/creating-and-publishing-scoped-public-packages) you can get more details.
+But the steps are very easy.
+
+1. Create an account on `npmjs.com`.
+2. On demand increase your `version` number in `package.json`.
+3. Commit and push your changes.
+4. Open a terminal.
+5. Go to the root of your project.
+6. Run `npm login` and login via browser (or what else you like).
+7. Run `npm publish --access public`.
+8. Wait until publication is ready.
