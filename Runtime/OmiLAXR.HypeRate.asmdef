@@ -1,0 +1,16 @@
+{
+    "name": "OmiLAXR.HypeRate",
+    "rootNamespace": "OmiLAXR.HypeRate",
+    "references": [
+        "GUID:92238810d69db43818b28b85251b4b3c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
