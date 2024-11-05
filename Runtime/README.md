@@ -6,6 +6,8 @@ This module is using HypeRate SDK for measuring heart rate and is providing the 
 The adapter has following third-party dependencies attached:
 
 - `HypeRate`: We adjusted and attached the sourde files of the SDK https://github.com/HypeRate/HypeRate-Unity/tree/master/Assets/HypeRate/HypeRate%20Heart%20Rate%20SDK. No installations are needed.
+- `Supported Device`: Install on the device of your choice the `HypeRate` app: https://www.hyperate.io/downloads
+- `API Key`: Get an API key from https://www.hyperate.io/api. It is free for research and indie projects.
 
 ## Install by using scoped registry
 1. Ensure in "Project settings" > "Package Manager" that you have the scoped registry with following settings:

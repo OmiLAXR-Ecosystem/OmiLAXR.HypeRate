@@ -1,4 +1,3 @@
-using System;
 using OmiLAXR.Actors.HeartRate;
 using UnityEngine;
 using HR = HypeRate.SDK.HypeRate;
@@ -13,7 +12,7 @@ namespace OmiLAXR.HypeRate
         public int heartRate = 0;
         
         [Header("Get it here https://www.hyperate.io/api.")]
-        public string websocketToken = "<Request your Websocket Token>"; 
+        public string apiKey = "<Request your API key>"; 
         [Header("Get it from your HypeRate App.")]
         public string sessionId = "internal-testing";
         public string hyperateURL = "wss://app.hyperate.io/socket/websocket";
@@ -30,7 +29,7 @@ namespace OmiLAXR.HypeRate
                 heartRate = hr;
             }; 
             
-            await _hypeRateSocket.ConnectToServer(websocketToken, hyperateURL);
+            await _hypeRateSocket.ConnectToServer(apiKey, hyperateURL);
             await _hypeRateSocket.JoinHeartbeatChannel(sessionId);
             
         }
