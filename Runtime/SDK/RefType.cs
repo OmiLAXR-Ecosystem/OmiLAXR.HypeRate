@@ -1,6 +1,6 @@
 namespace HypeRate.SDK
 {
-    enum RefType
+    public enum RefType
     {
         Unknown,
         Join,

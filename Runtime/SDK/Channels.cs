@@ -4,25 +4,25 @@ using System.Linq;
 
 namespace HypeRate.SDK
 {
-    class Channels
+    public class Channels
     {
-        private readonly Dictionary<int, string> joiningChannels = new();
+        private readonly Dictionary<int, string> _joiningChannels = new Dictionary<int, string>();
 
-        private readonly List<string> joinedChannels = new();
+        private readonly List<string> _joinedChannels = new List<string>();
 
-        private readonly Dictionary<int, string> leavingChannels = new();
+        private readonly Dictionary<int, string> _leavingChannels = new Dictionary<int, string>();
 
-        private readonly Random randomNumberGenerator = new();
+        private readonly Random _randomNumberGenerator = new Random();
 
-        private readonly List<int> refsInUse = new();
+        private readonly List<int> _refsInUse = new List<int>();
 
         private int GenerateRandomRef()
         {
-            var generatedRef = randomNumberGenerator.Next(1, int.MaxValue - 1);
+            var generatedRef = _randomNumberGenerator.Next(1, int.MaxValue - 1);
 
-            while (refsInUse.Contains(generatedRef))
+            while (_refsInUse.Contains(generatedRef))
             {
-                generatedRef = randomNumberGenerator.Next(1, int.MaxValue - 1);
+                generatedRef = _randomNumberGenerator.Next(1, int.MaxValue - 1);
             }
 
             return generatedRef;
@@ -30,17 +30,12 @@ namespace HypeRate.SDK
 
         public RefType DetermineRefType(int @ref)
         {
-            if (joiningChannels.ContainsKey(@ref))
+            if (_joiningChannels.ContainsKey(@ref))
             {
                 return RefType.Join;
             }
 
-            if (leavingChannels.ContainsKey(@ref))
-            {
-                return RefType.Leave;
-            }
-
-            return RefType.Unknown;
+            return _leavingChannels.ContainsKey(@ref) ? RefType.Leave : RefType.Unknown;
         }
 
         /// <summary>
@@ -54,136 +49,114 @@ namespace HypeRate.SDK
         /// </returns>
         public int AddJoiningChannel(string channelName)
         {
-            if (joinedChannels.Contains(channelName))
+            if (_joinedChannels.Contains(channelName))
             {
                 return -1;
             }
 
-            if (joiningChannels.ContainsValue(channelName))
+            if (_joiningChannels.ContainsValue(channelName))
             {
                 return -1;
             }
 
-            if (leavingChannels.ContainsValue(channelName))
+            if (_leavingChannels.ContainsValue(channelName))
             {
-                var leavingChannelRef = leavingChannels.First((pair) => pair.Value == channelName).Key;
-                leavingChannels.Remove(leavingChannelRef);
-                refsInUse.Remove(leavingChannelRef);
+                var leavingChannelRef = _leavingChannels.First((pair) => pair.Value == channelName).Key;
+                _leavingChannels.Remove(leavingChannelRef);
+                _refsInUse.Remove(leavingChannelRef);
             }
 
             var generatedRef = GenerateRandomRef();
 
-            joiningChannels.Add(generatedRef, channelName);
-            refsInUse.Add(generatedRef);
+            _joiningChannels.Add(generatedRef, channelName);
+            _refsInUse.Add(generatedRef);
 
             return generatedRef;
         }
 
         public void HandleChannelJoin(int joinedRef)
         {
-            if (refsInUse.Contains(joinedRef) == false)
+            if (_refsInUse.Contains(joinedRef) == false)
             {
                 return;
             }
 
-            var channelName = joiningChannels[joinedRef];
+            var channelName = _joiningChannels[joinedRef];
 
             if (channelName == null)
             {
                 return;
             }
 
-            refsInUse.Remove(joinedRef);
-            joiningChannels.Remove(joinedRef);
-            joinedChannels.Add(channelName);
+            _refsInUse.Remove(joinedRef);
+            _joiningChannels.Remove(joinedRef);
+            _joinedChannels.Add(channelName);
         }
 
         public int AddLeavingChannel(string channelName)
         {
             var generatedRef = GenerateRandomRef();
 
-            leavingChannels.Add(generatedRef, channelName);
-            refsInUse.Add(generatedRef);
+            _leavingChannels.Add(generatedRef, channelName);
+            _refsInUse.Add(generatedRef);
 
             return generatedRef;
         }
 
         public List<string> GetChannelsToJoin()
         {
-            var result = new List<string>();
-            var channelsToLeave = leavingChannels.Values.ToList();
+            var channelsToLeave = _leavingChannels.Values.ToList();
 
-            foreach (var joinedChannel in joinedChannels)
-            {
-                if (channelsToLeave.Contains(joinedChannel))
-                {
-                    continue;
-                }
-
-                result.Add(joinedChannel);
-            }
-
-            foreach (var joiningChannel in joiningChannels.Values)
-            {
-                if (channelsToLeave.Contains(joiningChannel))
-                {
-                    continue;
-                }
-
-                result.Add(joiningChannel);
-            }
+            var result = _joinedChannels.Where(joinedChannel => !channelsToLeave.Contains(joinedChannel)).ToList();
+            result.AddRange(_joiningChannels.Values.Where(joiningChannel => !channelsToLeave.Contains(joiningChannel)));
 
             return result;
         }
 
         public void HandleJoin(int @ref)
         {
-            if (refsInUse.Contains(@ref) == false)
+            if (_refsInUse.Contains(@ref) == false)
             {
                 return;
             }
 
-            var joinedChannelName = joiningChannels[@ref];
+            var joinedChannelName = _joiningChannels[@ref];
 
-            refsInUse.Remove(@ref);
-            joiningChannels.Remove(@ref);
-            joinedChannels.Add(joinedChannelName);
+            _refsInUse.Remove(@ref);
+            _joiningChannels.Remove(@ref);
+            _joinedChannels.Add(joinedChannelName);
         }
 
         public void HandleLeave(int @ref)
         {
-            if (refsInUse.Contains(@ref) == false)
+            if (_refsInUse.Contains(@ref) == false)
             {
                 return;
             }
 
-            var leftChannelName = leavingChannels[@ref];
+            var leftChannelName = _leavingChannels[@ref];
 
             if (leftChannelName == null)
             {
                 return;
             }
 
-            refsInUse.Remove(@ref);
-            leavingChannels.Remove(@ref);
+            _refsInUse.Remove(@ref);
+            _leavingChannels.Remove(@ref);
         }
 
         public void HandleReconnect()
         {
-            joiningChannels.Clear();
-            leavingChannels.Clear();
-            joinedChannels.Clear();
-            refsInUse.Clear();
+            _joiningChannels.Clear();
+            _leavingChannels.Clear();
+            _joinedChannels.Clear();
+            _refsInUse.Clear();
         }
 
         public override string ToString()
         {
-            return String.Format(
-                "Channels {{ joining: [ {0} ], joined: [ {1} ], leaving: [ {2} ]}}",
-                string.Join(", ", joiningChannels.Values),
-                string.Join(", ", joinedChannels),
-                string.Join(", ", leavingChannels.Values)
-            );
+            return
+                $"Channels {{ joining: [ {string.Join(", ", _joiningChannels.Values)} ], joined: [ {string.Join(", ", _joinedChannels)} ], leaving: [ {string.Join(", ", _leavingChannels.Values)} ]}}";
         }
     }
 }

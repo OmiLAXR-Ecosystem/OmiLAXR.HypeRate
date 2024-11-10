@@ -14,9 +14,9 @@ namespace HypeRate.SDK
 
         private static HypeRate _instance;
 
-        private ClientWebSocket _webSocket = new ClientWebSocket();
+        private readonly ClientWebSocket _webSocket = new ClientWebSocket();
 
-        private Channels _channels = new();
+        private readonly Channels _channels = new Channels();
 
         public event HeartRateUpdateHandler OnHeartRateUpdate;
         public event Action<HypeRateDataPackage> OnMessage;
@@ -56,17 +56,19 @@ namespace HypeRate.SDK
                     do
                     {
                         result = await _webSocket.ReceiveAsync(buffer, CancellationToken.None);
+                        if (buffer.Array == null)
+                            continue;
                         var message = Encoding.UTF8.GetString(buffer.Array, 0, result.Count);
                         
                         var dataPackage = JsonUtility.FromJson<HypeRateDataPackage>(message);
 
                         OnMessage?.Invoke(dataPackage);
+
+                        if (dataPackage.@event != "hr_update") 
+                            continue;
                         
-                        if (dataPackage.@event == "hr_update")
-                        {
-                            var hr = int.Parse(dataPackage.payload.hr);
-                            OnHeartRateUpdate?.Invoke(hr);
-                        }
+                        var hr = int.Parse(dataPackage.payload.hr);
+                        OnHeartRateUpdate?.Invoke(hr);
                     }
                     while (!result.EndOfMessage);
                 }
@@ -75,7 +77,7 @@ namespace HypeRate.SDK
 
         public async Task CloseConnection()
         {
-            await _webSocket.CloseAsync(WebSocketCloseStatus.Empty, null, CancellationToken.None);
+            await _webSocket.CloseAsync(WebSocketCloseStatus.Empty, "", CancellationToken.None);
             _channels.HandleReconnect();
             Debug.Log("[HypeRate] Connection closed!");
         }
@@ -90,7 +92,7 @@ namespace HypeRate.SDK
 
         public async Task JoinHeartbeatChannel(string deviceId)
         {
-            var channelName = string.Format("hr:{0}", deviceId);
+            var channelName = $"hr:{deviceId}";
             var refArg = _channels.AddJoiningChannel(channelName);
 
             await SendMessage(Network.GetJoinPacket(channelName, refArg));
@@ -98,7 +100,7 @@ namespace HypeRate.SDK
 
         public async Task LeaveHeartbeatChannel(string deviceId)
         {
-            var channelName = string.Format("hr:{0}", deviceId);
+            var channelName = $"hr:{deviceId}";
             var refArg = _channels.AddLeavingChannel(channelName);
 
             await SendMessage(Network.GetLeavePacket(channelName, refArg));
@@ -106,7 +108,7 @@ namespace HypeRate.SDK
 
         public async Task JoinClipsChannel(string deviceId)
         {
-            var channelName = string.Format("clips:{0}", deviceId);
+            var channelName = $"clips:{deviceId}";
             var refArg = _channels.AddJoiningChannel(channelName);
 
             await SendMessage(Network.GetJoinPacket(channelName, refArg));
@@ -134,10 +136,10 @@ namespace HypeRate.SDK
         {
             if (input.StartsWith("hr:"))
             {
-                return input[3..];
+                return input.Substring(3);
             }
 
-            return input.StartsWith("clips:") ? input[6..] : input;
+            return input.StartsWith("clips:") ? input.Substring(6) : input;
         }
     }
 }
