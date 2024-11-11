@@ -1,11 +1,32 @@
 # OmiLAXR.HypeRate
 
-This module is using HypeRate SDK for measuring heart rate and is providing the values to OmiLAXR pipeline. To use it just drag `HypeRateProvider` to the target actor pipeline and attach it to the `Heart Rate Monitor` component (see example in Prefab).
+This module is using HypeRate SDK for measuring heart rate and is providing the values to OmiLAXR pipeline. 
 
+To use it just drag `HypeRateProvider` to the target actor pipeline and attach it to the `Heart Rate Monitor` component (see example in Prefab).
+
+## Compatibility
+
+Because of the less dependencies and modular design of OmiLAXRv2 this framework is compatible with all XR frameworks. It doesnt matter if you use MRTK, VRTK, SteamVR, UnityXR, ... and it doesnt matter what equipment you use.
+
+You can look for existing modules tracking the behaviour you need. The rest can be easily implemented by you own - and we hope you will share it with the community!
+
+The only thing we need to consider are the Unity version. We try to support as much as possible upwards of Unity 2019.4.40f1. You are invited to contribute!
+
+The compatibility was tested on
+
+- [ ]  Unity 2019.4.40f1 (LTS)
+- [X]  Unity 2020.3.48f1 (LTS)
+- [X]  Unity 2021.3.15f1 (LTS)
+- [X]  Unity 2021.3.45f1 (LTS)
+- [X]  Unity 2022.3.52f1 (LTS)
+- [X]  Unity 2023.2.20f1 (no LTS)
+- [X]  Unity 6000.0.25f1 (LTS)
+
+Please contact us on https://discord.gg/yJgk4ATg if it is not running on your Unity version. We will try to make it possible.
 ## Module dependencies
 The adapter has following third-party dependencies attached:
 
-- `HypeRate`: We adjusted and attached the sourde files of the SDK https://github.com/HypeRate/HypeRate-Unity/tree/master/Assets/HypeRate/HypeRate%20Heart%20Rate%20SDK. No installations are needed.
+- `HypeRate`: We adjusted and attached the source files of the SDK https://github.com/HypeRate/HypeRate-Unity/tree/master/Assets/HypeRate/HypeRate%20Heart%20Rate%20SDK. No installations are needed.
 - `Supported Device`: Install on the device of your choice the `HypeRate` app: https://www.hyperate.io/downloads
 - `API Key`: Get an API key from https://www.hyperate.io/api. It is free for research and indie projects.
 
@@ -31,7 +52,7 @@ The adapter has following third-party dependencies attached:
    "com.rwth.unity.omilaxr.hyperate"
    ]
    }]`.
-4. By the way, you can also add here this package by adding `"com.rwth.unity.omilaxr.hyperate": "1.0.0"` to the dependencies (attention you can change the version).
+4. Go to the Unity Package Manager to `My registries` and install the package `com.rwth.unity.omilaxr.hyperate`.
 
 
 ## Install by using Git url
@@ -46,33 +67,6 @@ To work with this package we recommend to place it somewhere outside your Unity 
 Than, you can include the package into your project by going to `Window > Package Manager`, click on `(+)` button and finally import the `package.json` of this project by clicking on `Add package from disk`.
 
 For production use we recommend to use `Add package form git URL` or using scoped registries (see below).
-
-## Default Folder Structure
-
-Here you can see the default structure of the adapter unity packages. The folders surrounding with (FOLDER) are not delivered by default.
-
-- root
-  - (Editor)
-  - Examples
-  - Plugins
-  - Prefabs
-  - Runtime
-    - Actors
-    - Composers
-      - HigherComposers
-    - Endpoints
-    - Extensions
-    - Filters
-    - Hooks
-    - Listeners
-    - Pipelines
-    - TrackingBehaviours
-  - Tests
-    - Runtime
-    - (Editor)
-
-## Use internal for project
-If you do not wish to publish the package you can add the package in root of your Unity project. Accordingly you have to import your package for your project (see above "For Developers").
 
 ## Publication
 
