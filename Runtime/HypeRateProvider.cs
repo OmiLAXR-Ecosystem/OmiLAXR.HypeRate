@@ -36,6 +36,8 @@ namespace OmiLAXR.HypeRate
 
         private async void OnApplicationQuit()
         {
+            if (_hypeRateSocket == null)
+                return;
             await _hypeRateSocket.CloseConnection();
         }
     }
