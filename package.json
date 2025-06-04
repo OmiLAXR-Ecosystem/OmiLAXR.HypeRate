@@ -1,6 +1,6 @@
 {
   "name": "com.rwth.unity.omilaxr.hyperate",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "displayName": "OmiLAXR.HypeRate",
   "description": "An OmiLAXR module using HypeRate for heart rate measurement.",
   "unity": "2021.3",
@@ -10,8 +10,7 @@
   "licensesUrl": "https://gitlab.com/learntech-rwth/omilaxr-ecosystem/v2/omilaxrv2.hyperate/-/blob/main/LICENSE",
   "homepage": "https://omilaxr.dev/",
   "dependencies": {
-    "com.rwth.unity.omilaxr": "2.0.9",
-    "com.unity.nuget.newtonsoft-json": "3.0.2"
+    "com.rwth.unity.omilaxr": "2.0.9"
   },
   "keywords": [
     "OmiLAXR",

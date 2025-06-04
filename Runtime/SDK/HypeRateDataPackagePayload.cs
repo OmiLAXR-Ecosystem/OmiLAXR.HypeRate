@@ -1,9 +1,9 @@
 using System;
 
-namespace HypeRate.SDK
+namespace OmiLAXR.HypeRate.SDK
 {
     [Serializable]
-    public class HypeRateDataPackagePayload
+    internal class HypeRateDataPackagePayload
     {
         public string hr;
         public string status;

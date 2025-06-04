@@ -1,6 +1,6 @@
-namespace HypeRate.SDK
+namespace OmiLAXR.HypeRate.SDK
 {
-    public enum ChannelType
+    internal enum ChannelType
     {
         Unknown,
         Heartrate,

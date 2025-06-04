@@ -5,10 +5,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace HypeRate.SDK
+namespace OmiLAXR.HypeRate.SDK
 {
-    public delegate void HeartRateUpdateHandler(int heartRate);
-    public class HypeRate
+    internal delegate void HeartRateUpdateHandler(int heartRate);
+    internal class HypeRate
     {
         private HypeRate() { }
 

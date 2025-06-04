@@ -1,6 +1,6 @@
 using OmiLAXR.Actors.HeartRate;
 using UnityEngine;
-using HR = HypeRate.SDK.HypeRate;
+using HR = OmiLAXR.HypeRate.SDK.HypeRate;
 
 namespace OmiLAXR.HypeRate
 {

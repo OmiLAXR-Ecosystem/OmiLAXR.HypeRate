@@ -1,10 +1,10 @@
 using System;
 
-namespace HypeRate.SDK
+namespace OmiLAXR.HypeRate.SDK
 {
     
     [Serializable]
-    public class HypeRateDataPackage
+    internal class HypeRateDataPackage
     {
         public string @event; // @ escapes the "event" keyword
         public HypeRateDataPackagePayload payload;

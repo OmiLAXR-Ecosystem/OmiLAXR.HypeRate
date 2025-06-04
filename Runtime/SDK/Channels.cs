@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace HypeRate.SDK
+namespace OmiLAXR.HypeRate.SDK
 {
-    public class Channels
+    internal class Channels
     {
         private readonly Dictionary<int, string> _joiningChannels = new Dictionary<int, string>();
 

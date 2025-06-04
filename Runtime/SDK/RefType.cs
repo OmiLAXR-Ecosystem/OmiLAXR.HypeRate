@@ -1,6 +1,6 @@
-namespace HypeRate.SDK
+namespace OmiLAXR.HypeRate.SDK
 {
-    public enum RefType
+    internal enum RefType
     {
         Unknown,
         Join,

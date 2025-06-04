@@ -1,6 +1,6 @@
-namespace HypeRate.SDK
+namespace OmiLAXR.HypeRate.SDK
 {
-    public static class Network
+    internal static class Network
     {
         public static string GetJoinPacket(string channelName, int @ref)
         {
