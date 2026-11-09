@@ -1,4 +1,5 @@
 using OmiLAXR.Actors.HeartRate;
+using OmiLAXR.HypeRate.SDK;
 using UnityEngine;
 using HR = OmiLAXR.HypeRate.SDK.HypeRate;
 
@@ -17,14 +18,18 @@ namespace OmiLAXR.HypeRate
         public string sessionId = "internal-testing";
         public string hyperateURL = "wss://app.hyperate.io/socket/websocket";
 
-        // Textbox to display your heart rate in
-        private HR _hypeRateSocket;
+        /// <summary>
+        /// Socket delivering heart rates. Defaults to the HypeRate websocket; assign before Start to replace it, e.g. in tests.
+        /// </summary>
+        public IHeartRateSocket Socket { get; set; }
+
+        private IHeartRateSocket _hypeRateSocket;
 
         private async void Start()
         {
-            _hypeRateSocket = HR.GetInstance();
+            _hypeRateSocket = Socket ?? HR.GetInstance();
 
-            _hypeRateSocket.OnHeartRateUpdate += hr =>
+            _hypeRateSocket.HeartRateUpdated += hr =>
             {
                 heartRate = hr;
             }; 

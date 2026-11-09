@@ -8,7 +8,7 @@ using UnityEngine;
 namespace OmiLAXR.HypeRate.SDK
 {
     internal delegate void HeartRateUpdateHandler(int heartRate);
-    internal class HypeRate
+    internal class HypeRate : IHeartRateSocket
     {
         private HypeRate() { }
 
@@ -19,6 +19,12 @@ namespace OmiLAXR.HypeRate.SDK
         private readonly Channels _channels = new Channels();
 
         public event HeartRateUpdateHandler OnHeartRateUpdate;
+
+        event Action<int> IHeartRateSocket.HeartRateUpdated
+        {
+            add => OnHeartRateUpdate += value.Invoke;
+            remove => OnHeartRateUpdate -= value.Invoke;
+        }
         public event Action<HypeRateDataPackage> OnMessage;
 
         public static HypeRate GetInstance()
