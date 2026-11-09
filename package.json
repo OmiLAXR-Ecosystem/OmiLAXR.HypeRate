@@ -1,6 +1,6 @@
 {
   "name": "com.rwth.unity.omilaxr.hyperate",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "displayName": "OmiLAXR.HypeRate",
   "description": "An OmiLAXR module using HypeRate for heart rate measurement.",
   "unity": "2020.3",
