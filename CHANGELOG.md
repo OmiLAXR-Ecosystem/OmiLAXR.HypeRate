@@ -8,6 +8,7 @@
 
 ### Changed
 - Updated package version metadata.
+- Inspector tooltips for the fields of `HypeRateProvider` and an XML summary for the class. Both appear on docs.omilaxr.dev.
 
 ---
 
